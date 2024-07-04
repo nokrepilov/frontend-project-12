@@ -24,31 +24,33 @@ const Login = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div>
+    <form onSubmit={formik.handleSubmit} style={{ maxWidth: '400px', margin: 'auto' }}>
+      <div className="form-group">
         <label htmlFor="username">Username</label>
         <input
           id="username"
           name="username"
           type="text"
+          className="form-control"
           onChange={formik.handleChange}
           value={formik.values.username}
         />
       </div>
-      <div>
+      <div className="form-group">
         <label htmlFor="password">Password</label>
         <input
           id="password"
           name="password"
           type="password"
+          className="form-control"
           onChange={formik.handleChange}
           value={formik.values.password}
         />
       </div>
-      <button type="submit" disabled={formik.isSubmitting}>
+      <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
         Submit
       </button>
-      {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+      {formik.errors.password ? <div className="text-danger mt-2">{formik.errors.password}</div> : null}
     </form>
   );
 };
