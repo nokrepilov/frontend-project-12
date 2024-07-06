@@ -1,32 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store/store';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Chat from './components/Chat';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
+import PrivateRoute from './components/PrivateRoute'; // Ensure you have a private route component
+import Header from './components/Header';
 
 const App = () => {
-  const isAuthenticated = !!localStorage.getItem('token');
-
   return (
-    <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/chat">
-            {isAuthenticated ? <Chat /> : <Redirect to="/login" />}
-          </Route>
-          <Route path="/" exact>
-            <Redirect to="/chat" />
-          </Route>
-          <Route>
-            <div>404 Not Found</div>
-          </Route>
-        </Switch>
-      </Router>
-    </Provider>
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={SignUp} />
+        <PrivateRoute exact path="/" component={Chat} />
+        <Route path="*" render={() => <div>404 Not Found</div>} />
+      </Switch>
+    </Router>
   );
 };
 
