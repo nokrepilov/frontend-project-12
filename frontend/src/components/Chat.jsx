@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
-import { fetchChannels } from '../store/channelsSlice';
+import { fetchChannels, setActiveChannel } from '../store/channelsSlice';
 import { fetchMessages, addMessage } from '../store/messagesSlice';
+import AddChannelModal from './AddChannelModal';
+import ChannelDropdown from './ChannelDropdown';
 
 const socket = io('http://localhost:3001');
 
 const Chat = () => {
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
-  const messages = useSelector((state) => state.messages.messages);
-  const [currentChannel, setCurrentChannel] = useState('General');
+  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
+  const messages = useSelector((state) => state.messages.messages.filter((msg) => msg.channelId === activeChannelId));
   const [message, setMessage] = useState('');
+  const [showAddChannelModal, setShowAddChannelModal] = useState(false);
 
   useEffect(() => {
     dispatch(fetchChannels());
-    dispatch(fetchMessages(currentChannel));
+    dispatch(fetchMessages(activeChannelId));
 
     socket.on('receiveMessage', (newMessage) => {
       dispatch(addMessage(newMessage));
@@ -24,11 +27,11 @@ const Chat = () => {
     return () => {
       socket.off('receiveMessage');
     };
-  }, [dispatch, currentChannel]);
+  }, [dispatch, activeChannelId]);
 
   const handleSendMessage = () => {
     const newMessage = {
-      channel: currentChannel,
+      channelId: activeChannelId,
       content: message,
       user: 'User', // Replace with dynamic user information
       timestamp: new Date().toISOString(),
@@ -37,23 +40,30 @@ const Chat = () => {
     setMessage('');
   };
 
+  const handleAddChannel = () => {
+    setShowAddChannelModal(true);
+  };
+
   return (
-    <div>
-      <div>
+    <div className="chat-container">
+      <div className="channels">
         <h2>Channels</h2>
         <ul>
           {channels.map((channel) => (
             <li
               key={channel.id}
-              onClick={() => setCurrentChannel(channel.name)}
-              style={{ cursor: 'pointer', fontWeight: channel.name === currentChannel ? 'bold' : 'normal' }}
+              onClick={() => dispatch(setActiveChannel(channel.id))}
+              style={{ cursor: 'pointer', fontWeight: channel.id === activeChannelId ? 'bold' : 'normal' }}
             >
-              {channel.name}
+              #{channel.name}
+              <ChannelDropdown channel={channel} />
             </li>
           ))}
         </ul>
+        <button onClick={handleAddChannel}>Add Channel</button>
+        {showAddChannelModal && <AddChannelModal onClose={() => setShowAddChannelModal(false)} />}
       </div>
-      <div>
+      <div className="messages">
         <h2>Messages</h2>
         <ul>
           {messages.map((message) => (
