@@ -2,8 +2,10 @@ import React from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+  const { t } = useTranslation();
   const history = useHistory();
 
   const formik = useFormik({
@@ -17,7 +19,7 @@ const Login = () => {
         localStorage.setItem('token', response.data.token);
         history.push('/');
       } catch (error) {
-        setErrors({ password: 'Invalid credentials' });
+        setErrors({ password: t('login.invalid_credentials') });
         setSubmitting(false);
       }
     },
@@ -27,7 +29,7 @@ const Login = () => {
     <div>
       <form onSubmit={formik.handleSubmit}>
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">{t('login.username')}</label>
           <input
             id="username"
             name="username"
@@ -37,7 +39,7 @@ const Login = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">{t('login.password')}</label>
           <input
             id="password"
             name="password"
@@ -46,10 +48,10 @@ const Login = () => {
             value={formik.values.password}
           />
         </div>
-        <button type="submit" disabled={formik.isSubmitting}>Submit</button>
+        <button type="submit" disabled={formik.isSubmitting}>{t('login.submit')}</button>
         {formik.errors.password ? <div>{formik.errors.password}</div> : null}
       </form>
-      <Link to="/signup">Don't have an account? Sign Up</Link>
+      <Link to="/signup">{t('login.signup_link')}</Link>
     </div>
   );
 };

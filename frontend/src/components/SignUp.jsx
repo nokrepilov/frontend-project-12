@@ -2,9 +2,11 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const history = useHistory();
 
   const formik = useFormik({
@@ -14,9 +16,9 @@ const SignUp = () => {
       confirmPassword: '',
     },
     validationSchema: yup.object({
-      username: yup.string().min(3, 'Must be at least 3 characters').max(20, 'Must be 20 characters or less').required('Required'),
-      password: yup.string().min(6, 'Must be at least 6 characters').required('Required'),
-      confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('Required'),
+      username: yup.string().min(3, t('signup.username_length')).max(20, t('signup.username_length')).required(t('required')),
+      password: yup.string().min(6, t('signup.password_length')).required(t('required')),
+      confirmPassword: yup.string().oneOf([yup.ref('password'), null], t('signup.password_match')).required(t('required')),
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
@@ -25,9 +27,9 @@ const SignUp = () => {
         history.push('/');
       } catch (error) {
         if (error.response && error.response.status === 409) {
-          setErrors({ username: 'Username already exists' });
+          setErrors({ username: t('signup.username_exists') });
         } else {
-          setErrors({ general: 'An error occurred' });
+          setErrors({ general: t('signup.general_error') });
         }
         setSubmitting(false);
       }
@@ -36,10 +38,10 @@ const SignUp = () => {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>{t('signup.signup')}</h2>
       <form onSubmit={formik.handleSubmit}>
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">{t('signup.username')}</label>
           <input
             id="username"
             name="username"
@@ -50,7 +52,7 @@ const SignUp = () => {
           {formik.errors.username ? <div>{formik.errors.username}</div> : null}
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">{t('signup.password')}</label>
           <input
             id="password"
             name="password"
@@ -61,7 +63,7 @@ const SignUp = () => {
           {formik.errors.password ? <div>{formik.errors.password}</div> : null}
         </div>
         <div>
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">{t('signup.confirm_password')}</label>
           <input
             id="confirmPassword"
             name="confirmPassword"
@@ -71,9 +73,10 @@ const SignUp = () => {
           />
           {formik.errors.confirmPassword ? <div>{formik.errors.confirmPassword}</div> : null}
         </div>
-        <button type="submit" disabled={formik.isSubmitting}>Submit</button>
+        <button type="submit" disabled={formik.isSubmitting}>{t('signup.submit')}</button>
         {formik.errors.general ? <div>{formik.errors.general}</div> : null}
       </form>
+      <Link to="/login">{t('signup.login_link')}</Link>
     </div>
   );
 };
