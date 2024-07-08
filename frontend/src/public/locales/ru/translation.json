@@ -1,22 +1,33 @@
 {
-    "welcome": "Добро пожаловать в Hexlet Chat",
-    "login": {
-      "username": "Имя пользователя",
-      "password": "Пароль",
-      "submit": "Отправить",
-      "signup_link": "Нет аккаунта? Зарегистрироваться"
-    },
-    "signup": {
-      "username": "Имя пользователя",
-      "password": "Пароль",
-      "confirm_password": "Подтвердите пароль",
-      "submit": "Зарегистрироваться",
-      "login_link": "Уже есть аккаунт? Войти"
-    },
-    "chat": {
-      "channels": "Каналы",
-      "messages": "Сообщения",
-      "send": "Отправить"
-    }
+  "welcome": "Добро пожаловать в Hexlet Chat",
+  "login": {
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "submit": "Отправить",
+    "signup_link": "Нет аккаунта? Зарегистрироваться"
+  },
+  "signup": {
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "confirm_password": "Подтвердите пароль",
+    "submit": "Зарегистрироваться",
+    "login_link": "Уже есть аккаунт? Войти"
+  },
+  "chat": {
+    "channels": "Каналы",
+    "messages": "Сообщения",
+    "send": "Отправить"
+  },
+  "error": {
+    "loading_channels": "Ошибка загрузки каналов",
+    "loading_messages": "Ошибка загрузки сообщений",
+    "adding_channel": "Ошибка добавления канала"
+  },
+  "toast": {
+    "channel_added": "Канал успешно добавлен"
+  },
+  "validation": {
+    "channel_name_length": "Длина имени канала должна быть от 3 до 20 символов",
+    "required": "Это поле обязательно"
   }
-  
+}

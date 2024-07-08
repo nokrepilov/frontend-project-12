@@ -1,24 +1,42 @@
+// src/components/Chat.js
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
-import { fetchChannels, setActiveChannel } from '../store/channelsSlice';
+import { fetchChannels } from '../store/channelsSlice';
 import { fetchMessages, addMessage } from '../store/messagesSlice';
-import AddChannelModal from './AddChannelModal';
-import ChannelDropdown from './ChannelDropdown';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const socket = io('http://localhost:3001');
 
 const Chat = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
-  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
-  const messages = useSelector((state) => state.messages.messages.filter((msg) => msg.channelId === activeChannelId));
+  const messages = useSelector((state) => state.messages.messages);
+  const [currentChannel, setCurrentChannel] = useState('General');
   const [message, setMessage] = useState('');
-  const [showAddChannelModal, setShowAddChannelModal] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchChannels());
-    dispatch(fetchMessages(activeChannelId));
+    const loadChannels = async () => {
+      try {
+        await dispatch(fetchChannels());
+      } catch (error) {
+        toast.error(t('error.loading_channels'));
+      }
+    };
+
+    const loadMessages = async () => {
+      try {
+        await dispatch(fetchMessages(currentChannel));
+      } catch (error) {
+        toast.error(t('error.loading_messages'));
+      }
+    };
+
+    loadChannels();
+    loadMessages();
 
     socket.on('receiveMessage', (newMessage) => {
       dispatch(addMessage(newMessage));
@@ -27,11 +45,11 @@ const Chat = () => {
     return () => {
       socket.off('receiveMessage');
     };
-  }, [dispatch, activeChannelId]);
+  }, [dispatch, currentChannel, t]);
 
   const handleSendMessage = () => {
     const newMessage = {
-      channelId: activeChannelId,
+      channel: currentChannel,
       content: message,
       user: 'User', // Replace with dynamic user information
       timestamp: new Date().toISOString(),
@@ -40,31 +58,24 @@ const Chat = () => {
     setMessage('');
   };
 
-  const handleAddChannel = () => {
-    setShowAddChannelModal(true);
-  };
-
   return (
-    <div className="chat-container">
-      <div className="channels">
-        <h2>Channels</h2>
+    <div>
+      <div>
+        <h2>{t('chat.channels')}</h2>
         <ul>
           {channels.map((channel) => (
             <li
               key={channel.id}
-              onClick={() => dispatch(setActiveChannel(channel.id))}
-              style={{ cursor: 'pointer', fontWeight: channel.id === activeChannelId ? 'bold' : 'normal' }}
+              onClick={() => setCurrentChannel(channel.name)}
+              style={{ cursor: 'pointer', fontWeight: channel.name === currentChannel ? 'bold' : 'normal' }}
             >
-              #{channel.name}
-              <ChannelDropdown channel={channel} />
+              {channel.name}
             </li>
           ))}
         </ul>
-        <button onClick={handleAddChannel}>Add Channel</button>
-        {showAddChannelModal && <AddChannelModal onClose={() => setShowAddChannelModal(false)} />}
       </div>
-      <div className="messages">
-        <h2>Messages</h2>
+      <div>
+        <h2>{t('chat.messages')}</h2>
         <ul>
           {messages.map((message) => (
             <li key={message.id}>
@@ -77,7 +88,7 @@ const Chat = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button onClick={handleSendMessage}>{t('chat.send')}</button>
       </div>
     </div>
   );
