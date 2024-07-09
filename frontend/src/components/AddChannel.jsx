@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { addChannel } from '../store/channelsSlice';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 const AddChannel = ({ closeModal }) => {
   const { t } = useTranslation();
@@ -19,7 +20,8 @@ const AddChannel = ({ closeModal }) => {
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
-        await dispatch(addChannel({ name: values.channelName }));
+        const filteredChannelName = leoProfanity.clean(values.channelName);
+        await dispatch(addChannel({ name: filteredChannelName }));
         toast.success(t('toast.channel_added'));
         closeModal();
       } catch (error) {

@@ -1,5 +1,3 @@
-// src/components/Chat.js
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
@@ -7,6 +5,7 @@ import { fetchChannels } from '../store/channelsSlice';
 import { fetchMessages, addMessage } from '../store/messagesSlice';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 const socket = io('http://localhost:3001');
 
@@ -48,9 +47,10 @@ const Chat = () => {
   }, [dispatch, currentChannel, t]);
 
   const handleSendMessage = () => {
+    const filteredMessage = leoProfanity.clean(message);
     const newMessage = {
       channel: currentChannel,
-      content: message,
+      content: filteredMessage,
       user: 'User', // Replace with dynamic user information
       timestamp: new Date().toISOString(),
     };
