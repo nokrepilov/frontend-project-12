@@ -5,11 +5,17 @@ import './index.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './i18n';
+import { RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import rollbar from './rollbar';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-    <ToastContainer />
+    <RollbarProvider instance={rollbar}>
+      <ErrorBoundary>
+        <App />
+        <ToastContainer />
+      </ErrorBoundary>
+    </RollbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
