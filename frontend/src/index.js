@@ -5,12 +5,11 @@ import './index.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './i18n';
-import { RollbarProvider, ErrorBoundary } from '@rollbar/react';
-import rollbar from './rollbar';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 
 ReactDOM.render(
   <React.StrictMode>
-    <RollbarProvider
+    <Provider
       config={{
         accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
         captureUncaught: true,
@@ -22,7 +21,7 @@ ReactDOM.render(
         <App />
         <ToastContainer />
       </ErrorBoundary>
-    </RollbarProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
