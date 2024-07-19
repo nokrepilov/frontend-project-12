@@ -10,7 +10,14 @@ import rollbar from './rollbar';
 
 ReactDOM.render(
   <React.StrictMode>
-    <RollbarProvider instance={rollbar}>
+    <RollbarProvider
+      config={{
+        accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+        captureUncaught: true,
+        captureUnhandledRejections: true,
+        environment: 'production',
+      }}
+    >
       <ErrorBoundary>
         <App />
         <ToastContainer />

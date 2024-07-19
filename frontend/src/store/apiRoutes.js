@@ -1,0 +1,5 @@
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+
+export const getMessagesUrl = (channel) =>
+  `${API_BASE_URL}/channels/${channel}/messages`;

@@ -1,10 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getMessagesUrl } from './apiRoutes';
 
-export const fetchMessages = createAsyncThunk('messages/fetchMessages', async (channel) => {
-  const response = await axios.get(`http://localhost:3001/channels/${channel}/messages`);
-  return response.data;
-});
+export const fetchMessages = createAsyncThunk(
+  'messages/fetchMessages',
+  async (channel) => {
+    const response = await axios.get(getMessagesUrl(channel));
+    return response.data;
+  }
+);
 
 const messagesSlice = createSlice({
   name: 'messages',
