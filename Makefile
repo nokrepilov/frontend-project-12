@@ -1,15 +1,24 @@
+lint-frontend:
+	make -C frontend lint
+
 install:
 	npm ci
 
-start:
-	npx start-server -s ./chat/build
-
-build:
-	rm -rf chat/build
-	npm run build
-
 start-frontend:
-	make -C chat start
+	make -C frontend start
 
 start-backend:
-	npx start-server -s ./chat/build
+	npx start-server -s ./frontend/build
+
+deploy:
+	git push heroku main
+
+start:
+	make start-backend
+
+develop:
+	make start-backend & make start-frontend
+
+build:
+	rm -rf frontend/build
+	npm run build
