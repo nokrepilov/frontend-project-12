@@ -1,16 +1,13 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { appPaths } from '../routes';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const token = localStorage.getItem('token');
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        token ? <Component {...props} /> : <Redirect to="/login" />
-      }
-    />
-  );
+const PrivateRoute = ({ children }) => {
+  const { token } = useSelector((state) => state.app);
+  if (!token) {
+    return <Navigate to={appPaths.login()} />;
+  }
+  return children;
 };
 
 export default PrivateRoute;

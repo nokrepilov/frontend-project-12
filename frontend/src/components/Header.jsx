@@ -1,24 +1,34 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/esm/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import useAuth from '../hooks';
 
 const Header = () => {
+  const { logOut } = useAuth();
   const { t } = useTranslation();
-  const history = useHistory();
-  const token = localStorage.getItem('token');
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    history.push('/login');
-  };
-
+  const app = useSelector((state) => state.app);
   return (
-    <header>
-      <nav>
-        <Link to="/">{t('welcome')}</Link>
-        {token && <button onClick={handleLogout}>{t('logout')}</button>}
-      </nav>
-    </header>
+    <Navbar expand="lg" className="shadow-sm bg-white">
+      <Container>
+        <Navbar.Brand>
+          <Link className="text-decoration-none text-black" to="/">Hexlet Chat</Link>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            {app.token ? (
+              <Button onClick={() => logOut()} variant="primary">{t('header.logout')}</Button>
+            ) : (
+              ''
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 

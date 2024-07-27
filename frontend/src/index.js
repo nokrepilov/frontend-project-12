@@ -1,27 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import { Provider } from 'react-redux';
+import ReactDOM from 'react-dom/client';
 import './index.css';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './i18n';
-import { Provider, ErrorBoundary } from '@rollbar/react';
+import store from './store';
+import init from './init.jsx';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider
-      config={{
-        accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
-        captureUncaught: true,
-        captureUnhandledRejections: true,
-        environment: 'production',
-      }}
-    >
-      <ErrorBoundary>
-        <App />
-        <ToastContainer />
-      </ErrorBoundary>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const startApp = async () => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  const initApp = await init();
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        {initApp}
+      </Provider>
+    </React.StrictMode>,
+  );
+};
+
+startApp();
