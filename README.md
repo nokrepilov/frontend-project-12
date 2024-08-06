@@ -5,25 +5,36 @@
 ## Description
 Project using Hexlet backend server for requests and auth operations. The registration, authorization, and logout functions have been implemented. You can register as a new user or, for convenience, use the following login and password combination to sign in: admin admin. The user can interact with various channels, add-edit-delete them. Also, the user has access to the function of changing the interface locale (Russian and English languages are available). The functionality of pop-up notifications (react-toastify) is operational. Censorship (leo-profanity) has been applied to the interface.
 
-### Technology stack used
+## Features
 
-React, TypeScript, Redux Toolkit, SASS, Bootstrap, i18next, Axios, Socket.io
+- Registration user
+- Login user
+- Send messages
+- Receive messages online from another users
+- Add new channels
+- Rename new channels
+- Delete new channels
 
-### Installation instructions 
-To run this project locally, follow these steps:
+## System requirements
 
-- Clone the repository:
-```
-git clone https://github.com/nokrepilov/frontend-project-12.git
-```
-- Install dependencies:
-```
-npm install
-```
-- Start the development server:
-```
-npm start
-```
+For the project to work, you must have an installed Node.js 10+ version
 
+## Installation
 
+### Clone repository
+    git clone https://github.com/nokrepilov/frontend-project-12.git
 
+### Install dependencies
+    make install
+
+### Run server
+    make start
+
+### Run frontend
+    make start-frontend
+
+### Or you can run both in dev-mode
+    make develop
+
+### Build project
+    make build
