@@ -9,7 +9,7 @@
     "start": "start-server -s ./frontend/build",
     "postinstall": "cd frontend && npm ci"
   },
-  "author": "Nikita Okrepilov",
+  "author": "xyzelena",
   "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^2.0.3"

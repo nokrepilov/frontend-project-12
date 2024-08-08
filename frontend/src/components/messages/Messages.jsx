@@ -11,7 +11,7 @@ import HeaderListMessages from './HeaderListMessages.jsx';
 import ListMessages from './ListMessages.jsx';
 import NewMessageForm from '../Forms/NewMessageForm.jsx';
 
-export function Messages() {
+const Messages = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -79,4 +79,6 @@ export function Messages() {
       </div>
     </>
   );
-}
+};
+
+export default Messages;
