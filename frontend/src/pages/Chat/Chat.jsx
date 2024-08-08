@@ -13,7 +13,7 @@ import {
 
 import { addMessage } from '../../slices/messagesSlice.js';
 
-import Channels from '../../components/Channels/Channels.jsx';
+import Channels from '../../components/Channels/Channels';
 import Messages from '../../components/Messages/Messages.jsx';
 
 const Chat = () => {
