@@ -1,62 +1,83 @@
-import Col from 'react-bootstrap/esm/Col';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { messagesApi, useGetMessagesQuery } from '../../api/messages';
-import Message from './Message';
-import socket from '../../socket';
+import { toast } from 'react-toastify';
+
+import { useGetMessagesQuery } from '../../api/messagesApi.js';
+
+import { setMessages } from '../../slices/messagesSlice.js';
+
+import HeaderListMessages from './HeaderListMessages.jsx';
+import ListMessages from './ListMessages.jsx';
+import NewMessageForm from '../Forms/NewMessageForm.jsx';
 
 const Messages = () => {
-  const { data: messages = [] } = useGetMessagesQuery();
   const dispatch = useDispatch();
+
   const { t } = useTranslation();
-  const currentChannelId = useSelector((state) => state.app.currentChannelId);
-  const currentChannelName = useSelector((state) => state.app.currentChannelName);
-  const filteredMessages = messages.filter((message) => message.channelId === currentChannelId);
-  const messagesContainer = useRef();
+
+  const {
+    data,
+    error: getMessageError,
+    isLoading: isGettingMessage,
+    refetch,
+  } = useGetMessagesQuery();
+  //data => { id: '1', body: 'text message', channelId: '1', username: 'admin }
+
+  const { messages } = useSelector((state) => state.messages);
+
+  const { channels, currentChannelId } = useSelector((state) => state.channels);
+
+  const username = useSelector((state) => state.auth.username);
 
   useEffect(() => {
-    if (messagesContainer.current) {
-      messagesContainer.current.scrollTop = messagesContainer.current.scrollHeight;
+    if (data) {
+      dispatch(setMessages(data));
     }
-  }, [messages]);
+  }, [data]);
 
   useEffect(() => {
-    const handleNewMessage = (newMessage) => {
-      dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
-        draft.push(newMessage);
-      }));
-    };
-    socket.on('newMessage', handleNewMessage);
-    return () => {
-      socket.off('newMessage');
-    };
-  }, [dispatch]);
+    if (getMessageError) {
+      toast.error(t('errorsToast.messageGettingError'));
+    }
+  }, [getMessageError]);
+
+  const currentChannel = channels.find(
+    (channel) => channel.id === currentChannelId,
+  );
+
+  const currentChannelMessages = messages.filter(
+    (message) => message.channelId === currentChannelId,
+  );
+
+  const countCurrentChannelMessages = currentChannelMessages.length;
+
   return (
-    <Col className="p-0 h-100">
-      <div className="d-flex flex-column h-100">
-        <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="mb-0">
-            <b>
-              {`# ${currentChannelName}`}
-            </b>
-          </p>
-          <span className="text-muted">
-            {t('messages', { count: filteredMessages.length })}
-          </span>
-        </div>
-        <div className="overflow-auto px-5" ref={messagesContainer}>
-          {filteredMessages.map((message) => (
-            <div className="text-break mb-2" key={message.id}>
-              <b>{message.username}</b>
-              :
-              {message.message}
-            </div>
-          ))}
-        </div>
-        <Message />
+    <>
+      <div className="bg-light mb-4 p-3 shadow-sm small">
+        <HeaderListMessages
+          nameCurrentChannel={currentChannel?.name ?? ''}
+          countCurrentChannelMessages={countCurrentChannelMessages}
+        />
       </div>
-    </Col>
+
+      <div id="messages-box" className="chat-messages overflow-auto px-5">
+        {countCurrentChannelMessages > 0 && (
+          <ListMessages
+            currentChannelMessages={currentChannelMessages}
+            isLoading={isGettingMessage}
+          />
+        )}
+      </div>
+
+      <div className="mt-auto px-5 py-3">
+        <NewMessageForm
+          username={username}
+          channelId={currentChannelId}
+          refetchListMessages={refetch}
+        />
+      </div>
+    </>
   );
 };
 

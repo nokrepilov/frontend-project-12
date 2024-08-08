@@ -1,22 +1,7 @@
-import { useDispatch } from 'react-redux';
-import { setUserData } from '../store/slices/appSlice';
+import { useContext } from 'react';
 
-const useAuth = () => {
-  const dispatch = useDispatch();
+import authContext from '../contexts/AuthContext.js';
 
-  const logIn = (token, nickname) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('nickname', nickname);
-    dispatch(setUserData({ nickname, token }));
-  };
-
-  const logOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('nickname');
-    dispatch(setUserData({ nickname: '', token: null }));
-  };
-
-  return { logIn, logOut };
-};
+const useAuth = () => useContext(authContext);
 
 export default useAuth;
