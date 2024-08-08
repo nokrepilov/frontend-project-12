@@ -5,7 +5,7 @@ import useSocket from '../../hooks/useSocket.js';
 
 import TYPES_SOCKET_EVENTS from '../../utils/typesSocketEvents.js';
 
-import {
+import ChannelsSlice, {
   addChannel,
   setEditChannel,
   removeChannel,
@@ -13,7 +13,6 @@ import {
 
 import { addMessage } from '../../slices/messagesSlice.js';
 
-import { Channels } from '../../components/Channels/Channels.jsx';
 import { Messages } from '../../components/Messages/Messages.jsx';
 
 const Chat = () => {
