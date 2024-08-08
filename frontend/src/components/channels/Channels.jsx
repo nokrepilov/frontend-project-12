@@ -26,7 +26,7 @@ import ChannelContext from '../../contexts/ChannelContext.js';
 
 import ChannelModalContext from '../../contexts/ChannelModalContext.js';
 
-const Channels = () => {
+export const Channels = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -102,5 +102,3 @@ const Channels = () => {
     </>
   );
 };
-
-export default Channels;
