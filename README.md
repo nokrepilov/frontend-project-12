@@ -1,61 +1,58 @@
 ### Hexlet tests and linter status:
+### Hexlet tests and linter status:
 [![Actions Status](https://github.com/nokrepilov/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/nokrepilov/frontend-project-12/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/2592ae9fd7d5f665762a/maintainability)](https://codeclimate.com/github/nokrepilov/frontend-project-12/maintainability)
 
+# Real-Time Chat Application with React/Redux
 
-## Description: 
+## Description
 
-Chat (Slack) is a real-time application on React/Redux of the Slack app that allows you to exchange messages in various channels. 
+This is a real-time chat application built with React and Redux, allowing users to register, authenticate, create channels, and exchange messages in real time. The application use AJAX, REST API, and websockets for communication with the server.
 
-The project included working with web sockets, interacting with REST API, using React (with hooks), Redux (via reduxjs/toolkit), organizing routing on the client, authorization and authentication, assembly (webpack) and deployment.
+## Demo
+Check out the live demo of the Chat application [here](https://frontend-project-12-3hic.onrender.com/)
 
-### Link to [Chat](https://chat-iv1v.onrender.com)
+## Features
 
-Link to documentation for Backend Chat [@hexlet/chat-server](https://www.npmjs.com/package/@hexlet/chat-server)
+* *Registration and Authentication:* Users can create accounts and log in to the system.
+* *Channel Creation:* Users can create new channels for communication.
+* *Real-Time Chat:* New messages are displayed in the chat instantly.
+* *Sending and Receiving Messages:* Users can send and receive messages within channels.
+* *Channel List:* A list of available channels is displayed.
+* *Profanity Filter*:  The application filters out offensive language, creating a safer and more welcoming environment for all users.
 
-## The project included:
+## Usage
 
-* Create React App for building single-page React applications;
-* Deployment on Render;
-* Monitoring Errors in Production Using Rollbar;
-* Using React Router Routing; 
-* Styling using Bootstrap for React— html/css framework;
-* Asynchronous requests using axios;
-* Using the Socket.IO library, which provides two-way communication between clients and servers in real-time; 
-* Forms using the Formik library;
-* Using the Yup library for data validation;
-* Using an internationalisation framework i18next;
-* Leo-profanity library for filtering obscene words; 
-* GitHub Actions, Eslint, Prettier for maintain code quality;
-* Building a project architecture (MVC);
+* *Registration:* Fill out the registration form to create an account.
+* *Authentication:* Log in to the system using your created credentials.
+* *Creating a Channel:* Click on the "+" button and enter a channel name.
+* *Joining a Channel:* Select a channel from the list of available channels.
+* *Sending Messages:* Enter a message in the input field and press Enter.
+* *Reading Messages:* View messages from other users in the channel.
 
-## How to use it?
+## Installation and Running
 
-Sign up by the next login and password:
+1. *Install Node.js and npm*
+2. *Clone the repository:* 
 
-* Login: admin
-* Password: admin
-
-Or register your own account.
-
-* Send a message in the default channels (#general and #random) or create your own channel;
-* You can delete or rename the created channel;
-* Send and receive messages in real-time;
-* There is a filter for words in messages and channels; bad words will be hidden by '*';
-
-## How to install the app?
-
-- git clone this repository to your computer;
-- make sure that you have node.js and npm installed;
-- install dependencies and let your system run the package:
-```bash
-make install
+``` 
+git clone https://github.com/EkaterinaVag/frontend-project-12.git
 ```
-- build the project:
-```bash
-make build
+
+3. *Change directory:*
+
 ```
-- to run app:
-```bash
+cd frontend-project-12
+```
+
+3. *Install dependencies:*
+
+```
+npm install
+```
+
+4. *Start the frontend and backend servers:*
+
+```
+make start-frontend
 make start
 ```
-Other commands can be found in the Makefile.

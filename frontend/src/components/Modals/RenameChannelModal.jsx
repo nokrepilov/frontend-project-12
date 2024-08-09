@@ -1,39 +1,62 @@
-import { useSelector } from 'react-redux';
-import Modal from 'react-bootstrap/Modal';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
-import useChannelModal from '../../hooks/useChannelModal.js';
+import channelNameValidate from '../../channelNameValidate';
+import { renameCurrentChannel } from '../../slices/currentChannelSlice';
+import ModalComponent from './ModalComponent';
+import {
+  useGetChannelsQuery,
+  useRenameChannelMutation,
+} from '../../api/chatApi';
 
-import RenameChannelForm from '../Forms/RenameChannelForm.jsx';
+const RenameChannelModal = ({ onHide }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-import TYPES_MODAL from '../../utils/typesModal.js';
+  const selectedChannel = useSelector((state) => state.modal.selectedChannel);
+  const [renameChannel, { isLoading }] = useRenameChannelMutation();
 
-const RenameChannelModal = () => {
-  const { handleCloseCurrentModal, t } = useChannelModal();
+  const inputRef = useRef(null);
+  useEffect(() => {
+    setTimeout(() => inputRef.current.select());
+  }, []);
 
-  const { isVisible, type } = useSelector((state) => state.modals);
+  const { data: channels } = useGetChannelsQuery();
+  const channelNames = channels?.map((channel) => channel.name) || [];
 
-  // console.log(isVisible);
-
-  // console.log(type);
-
-  const isCurrentModalVisible =
-    type === TYPES_MODAL.RENAME_CHANNEL() && isVisible;
+  const formik = useFormik({
+    validationSchema: channelNameValidate(channelNames, t),
+    initialValues: {
+      name: selectedChannel.name,
+    },
+    onSubmit: async ({ name }) => {
+      try {
+        const filtredName = filter.clean(name);
+        await renameChannel({ name: filtredName, id: selectedChannel.id });
+        dispatch(renameCurrentChannel(filtredName));
+        toast.success(t('toastsTexts.rename'));
+        onHide();
+      } catch (err) {
+        toast.error(t('toastsTexts.error'));
+      }
+    },
+  });
 
   return (
-    <Modal
-      show={isCurrentModalVisible}
-      size="md"
-      centered
-      onHide={handleCloseCurrentModal}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{t('channelModals.titleRenameChannel')}</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>
-        <RenameChannelForm />
-      </Modal.Body>
-    </Modal>
+    <ModalComponent
+      onHide={onHide}
+      formik={formik}
+      onSubmit={formik.handleSubmit}
+      titleKey="modals.rename"
+      submitLabelKey="buttons.send"
+      isLoading={isLoading}
+      t={t}
+      inputRef={inputRef}
+    />
   );
 };
 

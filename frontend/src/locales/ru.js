@@ -1,110 +1,66 @@
 export default {
   translation: {
-    baseTextUI: {
-      header: 'Hexlet Chat',
+    modals: {
+      addChannel: 'Добавить канал',
+      delete: 'Удалить канал',
+      confirm: 'Уверены?',
+      rename: 'Переименовать канал',
+      channelName: 'Имя канала',
     },
-
+    toastsTexts: {
+      add: 'Канал создан',
+      rename: 'Канал переименован',
+      remove: 'Канал удалён',
+      error: 'Ошибка соединения',
+    },
     buttons: {
-      btnExit: 'Выйти',
-      btnEnter: 'Войти',
-      btnСancel: 'Отменить',
-      btnSend: 'Отправить',
-      btnDelete: 'Удалить',
-      btnRename: 'Переименовать',
+      cancel: 'Отменить',
+      add: 'Добавить',
+      send: 'Отправить',
+      remove: 'Удалить',
+      rename: 'Переименовать',
+      logout: 'Выйти',
+      login: 'Войти',
     },
-
-    notFoundPage: {
-      header: 'Страница не найдена',
-      text: 'Но вы можете перейти',
-      linkMainPage: 'на главную страницу',
-    },
-
-    loginPage: {
-      header: 'Войти',
-
-      login: 'Логин',
-      password: 'Пароль',
-
-      noRegistrationQuestion: 'Нет аккаунта?',
-      btnGetRegistration: 'Регистрация',
-    },
-
-    loginForm: {
-      login: 'Ваш ник',
-      password: 'Пароль',
-      invalidCredentials: 'Неверные имя пользователя или пароль',
-    },
-
-    signUpPage: {
-      header: 'Регистрация',
-
-      username: 'Имя пользователя',
-      ruleUsername: 'От 3 до 20 символов',
-
-      password: 'Пароль',
-      rulePassword: 'Не менее 6 символов',
-
-      confirmPassword: 'Подтвердите пароль',
-      ruleConfirmPassword: 'Пароли должны совпадать',
-
-      btnSignUpSubmit: 'Зарегистрироваться',
-    },
-
-    messages: {
-      countMessages_one: '{{count}} сообщение',
-      countMessages_few: '{{count}} сообщения',
-      countMessages_many: '{{count}} сообщений',
-    },
-
-    newMessageForm: {
-      ariaLabel: 'Новое сообщение',
-      placeholder: 'Введите сообщение...',
-    },
-
-    channels: {
-      header: 'Каналы',
-      labelToggle: 'Управление каналом',
-    },
-
-    channelModals: {
-      titleAddChannel: 'Добавить канал',
-      titleRenameChannel: 'Переименовать канал',
-      titleRemoveChannel: 'Удалить канал',
-      labelNameChannel: 'Имя канала',
-      questionRemoveChannel: 'Уверены?',
-    },
-
-    errorsValidation: {
-      min: 'От 3 до 20 символов',
+    validate: {
+      min: 'Не менее 6  символов',
       max: 'От 3 до 20 символов',
       required: 'Обязательное поле',
-      notOneOf: 'Должно быть уникальным',
-      name: 'Обязательное поле',
-
-      minPassword: 'Не менее 6 символов',
-      matchPasswords: 'Пароли должны совпадать',
+      confPass: 'Пароли должны совпадать',
+      unique: 'Должно быть уникальным',
     },
-
-    errorsToast: {
-      networkError: 'Ошибка соединения',
-
-      messageGettingError: 'Ошибка получения сообщений',
-      messageSendError: 'Ошибка отправки сообщения',
-
-      channelGettingError: 'Ошибка получения каналов',
-      channelAddError: 'Ошибка добавления канала',
-      channelEditError: 'Ошибка переименования канала',
-      channelRemoveError: 'Ошибка удаления канала',
-
-      signupUserExists: 'Такой пользователь уже существует',
-
-      authError: 'Ошибка аутентификации пользователя',
+    loginPage: {
+      username: 'Ваш ник',
+      password: 'Пароль',
+      error: 'Неверные имя пользователя или пароль',
+      exist: 'Нет аккаунта?',
+      registration: 'Регистрация',
+      img: 'Вход',
     },
-
-    successToast: {
-      channelAdded: 'Канал создан',
-      channelEdited: 'Канал переименован',
-      channelRemoved: 'Канал удален',
+    notFoundPage: {
+      noExist: 'Страница не найдена',
+      link: 'Но вы можете перейти',
+      main: 'на главную страницу',
     },
+    signupPage: {
+      username: 'Имя пользователя',
+      password: 'Пароль',
+      confirmPassword: 'Подтвердите пароль',
+      registration: 'Зарегистрироваться',
+      error: 'Такой пользователь уже существует',
+      header: 'Регистрация',
+    },
+    messages: {
+      newMessage: 'Новое сообщение',
+      printMessage: 'Введите сообщение...',
+      key_one: '{{count}} сообщение',
+      key_few: '{{count}} сообщения',
+      key_many: '{{count}} сообщений',
+    },
+    channels: 'Каналы',
+    dropdown: 'Управление каналом',
+    main: 'Hexlet Chat',
+    loading: 'Загрузка...',
+    plus: '+',
   },
 };

@@ -1,33 +1,57 @@
-import { useSelector } from 'react-redux';
-import Modal from 'react-bootstrap/Modal';
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
-import useChannelModal from '../../hooks/useChannelModal.js';
+import { setCurrentChannel } from '../../slices/currentChannelSlice';
+import {
+  useGetChannelsQuery,
+  useRemoveChannelMutation,
+} from '../../api/chatApi';
 
-import RemoveChannelForm from '../Forms/RemoveChannelForm.jsx';
+const RemoveChannelModal = ({ onHide }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-import TYPES_MODAL from '../../utils/typesModal.js';
+  const selectedChannel = useSelector((state) => state.modal.selectedChannel);
+  const [removeChannel, { isLoading }] = useRemoveChannelMutation();
 
-const RemoveChannelModal = () => {
-  const { handleCloseCurrentModal, t } = useChannelModal();
+  const { data: channels } = useGetChannelsQuery();
+  const generalChannel = channels[0];
 
-  const { isVisible, type } = useSelector((state) => state.modals);
-
-  const isCurrentModalVisible =
-    type === TYPES_MODAL.REMOVE_CHANNEL() && isVisible;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await removeChannel(selectedChannel.id);
+      dispatch(setCurrentChannel(generalChannel));
+      toast.success(t('toastsTexts.remove'));
+      onHide();
+    } catch (err) {
+      toast.error(t('toastsTexts.error'));
+    }
+  };
 
   return (
-    <Modal
-      show={isCurrentModalVisible}
-      size="md"
-      centered
-      onHide={handleCloseCurrentModal}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{t('channelModals.titleRemoveChannel')}</Modal.Title>
+    <Modal show centered>
+      <Modal.Header closeButton onHide={onHide}>
+        <Modal.Title>{t('modals.delete')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <RemoveChannelForm />
+        <p>{t('modals.confirm')}</p>
+        <form onSubmit={handleSubmit}>
+          <div
+            style={{ display: 'flex', justifyContent: 'flex-end', gap: '5px' }}
+          >
+            <Button variant="secondary" onClick={onHide}>
+              {t('buttons.cancel')}
+            </Button>
+            <Button variant="danger" type="submit" disabled={isLoading}>
+              {t('buttons.remove')}
+            </Button>
+          </div>
+        </form>
       </Modal.Body>
     </Modal>
   );

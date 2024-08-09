@@ -1,7 +1,14 @@
-import { useContext } from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import authContext from '../contexts/AuthContext.js';
+const useAuth = () => {
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-const useAuth = () => useContext(authContext);
+  useEffect(() => {
+    if (isAuthenticated) navigate('/');
+  }, [isAuthenticated, navigate]);
+};
 
 export default useAuth;

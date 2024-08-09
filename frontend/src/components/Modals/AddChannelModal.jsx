@@ -1,34 +1,58 @@
-import { useSelector } from 'react-redux';
-import Modal from 'react-bootstrap/Modal';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
-import useChannelModal from '../../hooks/useChannelModal.js';
+import channelNameValidate from '../../channelNameValidate';
+import { useGetChannelsQuery, useAddChannelMutation } from '../../api/chatApi';
+import { setCurrentChannel } from '../../slices/currentChannelSlice';
+import ModalComponent from './ModalComponent';
 
-import AddChannelForm from '../Forms/AddChannelForm.jsx';
+const AddChannelModal = ({ onHide }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-import TYPES_MODAL from '../../utils/typesModal.js';
+  const [addChannel, { isLoading }] = useAddChannelMutation();
 
-const AddChannelModal = () => {
-  const { handleCloseCurrentModal, t } = useChannelModal();
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
-  const { isVisible, type } = useSelector((state) => state.modals);
+  const { data: channels } = useGetChannelsQuery();
+  const channelNames = channels?.map((channel) => channel.name) || [];
 
-  const isCurrentModalVisible = type === TYPES_MODAL.ADD_CHANNEL() && isVisible;
+  const formik = useFormik({
+    validationSchema: channelNameValidate(channelNames, t),
+    initialValues: {
+      name: '',
+    },
+    onSubmit: async ({ name }) => {
+      try {
+        const filtredName = filter.clean(name);
+        const { data } = await addChannel(filtredName);
+        dispatch(setCurrentChannel(data));
+        toast.success(t('toastsTexts.add'));
+        onHide();
+      } catch (err) {
+        toast.error(t('toastsTexts.error'));
+      }
+    },
+  });
 
   return (
-    <Modal
-      show={isCurrentModalVisible}
-      size="md"
-      centered
-      onHide={handleCloseCurrentModal}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{t('channelModals.titleAddChannel')}</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>
-        <AddChannelForm />
-      </Modal.Body>
-    </Modal>
+    <ModalComponent
+      onHide={onHide}
+      formik={formik}
+      onSubmit={formik.handleSubmit}
+      titleKey="modals.addChannel"
+      submitLabelKey="buttons.add"
+      isLoading={isLoading}
+      t={t}
+      inputRef={inputRef}
+    />
   );
 };
 
