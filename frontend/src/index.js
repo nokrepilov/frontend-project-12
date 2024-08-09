@@ -1,11 +1,20 @@
-import ReactDOMClient from 'react-dom/client';
+import React from 'react';
+import { Provider } from 'react-redux';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import store from './store';
+import init from './init.jsx';
 
-import init from './init';
-
-const initApp = async () => {
-  const mountNode = document.getElementById('root');
-  const root = ReactDOMClient.createRoot(mountNode);
-  root.render(await init());
+const startApp = async () => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  const initApp = await init();
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        {initApp}
+      </Provider>
+    </React.StrictMode>,
+  );
 };
 
-initApp();
+startApp();

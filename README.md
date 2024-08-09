@@ -1,5 +1,4 @@
 ### Hexlet tests and linter status:
-### Hexlet tests and linter status:
 [![Actions Status](https://github.com/nokrepilov/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/nokrepilov/frontend-project-12/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/2592ae9fd7d5f665762a/maintainability)](https://codeclimate.com/github/nokrepilov/frontend-project-12/maintainability)
 
 # Real-Time Chat Application with React/Redux
@@ -35,7 +34,7 @@ Check out the live demo of the Chat application [here](https://frontend-project-
 2. *Clone the repository:* 
 
 ``` 
-git clone https://github.com/EkaterinaVag/frontend-project-12.git
+git clone https://github.com/nokrepilov/frontend-project-12.git
 ```
 
 3. *Change directory:*

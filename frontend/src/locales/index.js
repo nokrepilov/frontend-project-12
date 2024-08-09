@@ -1,3 +1,5 @@
-import ru from './ru.js';
+import ru from './ru';
 
-export default { ru };
+const resources = { ru };
+
+export default resources;
