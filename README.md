@@ -8,7 +8,7 @@
 This is a real-time chat application built with React and Redux, allowing users to register, authenticate, create channels, and exchange messages in real time. The application use AJAX, REST API, and websockets for communication with the server.
 
 ## Demo
-Check out the live demo of the Chat application [here](https://frontend-project-12-3hic.onrender.com/)
+Check out the live demo of the Chat application [here](https://frontend-project-12-o35c.onrender.com)
 
 ## Features
 
